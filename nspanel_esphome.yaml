@@ -70,6 +70,19 @@ esp32:
 
 captive_portal:
 
+i2c:
+  sda: 2
+  scl: 23
+  scan: true
+  id: i2c_bus
+
+mcp23017:
+  - id: 'mcp23017_hub'
+    address: 0x20
+
+ads1115:
+  - address: 0x48
+
 web_server:
   port: 80
   auth:
@@ -579,6 +592,63 @@ binary_sensor:
 
 ##### START - SENSOR CONFIGURATION #####
 sensor:
+
+  - platform: ntc
+    sensor: resistance_sensor_t1
+    calibration:
+      b_constant: 3950
+      reference_temperature: 25°C
+      reference_resistance: 10kOhm
+    name: T1 Temperature
+
+  - platform: resistance
+    id: resistance_sensor_t1
+    sensor: t1_sensor
+    configuration: DOWNSTREAM
+    resistor: 10kOhm
+    name: Resistance Sensor
+
+  - platform: ads1115
+    multiplexer: 'A0_GND'
+    id: t1_sensor
+
+   - platform: ntc
+    sensor: resistance_sensor_t2
+    calibration:
+      b_constant: 3950
+      reference_temperature: 25°C
+      reference_resistance: 10kOhm
+    name: T2 Temperature
+
+  - platform: resistance
+    id: resistance_sensor_t2
+    sensor: t2_sensor
+    configuration: DOWNSTREAM
+    resistor: 10kOhm
+    name: Resistance Sensor
+
+  - platform: ads1115
+    multiplexer: 'A1_GND'
+    id: t2_sensor
+
+   - platform: ntc
+    sensor: resistance_sensor_t3
+    calibration:
+      b_constant: 3950
+      reference_temperature: 25°C
+      reference_resistance: 10kOhm
+    name: T3 Temperature
+
+  - platform: resistance
+    id: resistance_sensor_t3
+    sensor: t3_sensor
+    configuration: DOWNSTREAM
+    resistor: 10kOhm
+    name: Resistance Sensor
+
+  - platform: ads1115
+    multiplexer: 'A2_GND'
+    id: t3_sensor
 
   ##### Uptime #####
   - name: ${device_name} uptime
